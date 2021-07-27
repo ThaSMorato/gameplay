@@ -3,25 +3,24 @@ import {
     Text,
     Image,
     View,
-    TouchableOpacity,
     ImageSourcePropType,
-    TouchableOpacityProps
 } from "react-native";
-
+import { RectButton, RectButtonProps } from "react-native-gesture-handler";
 
 import { styles } from "./styles";
 
 
-type IButtonProps = TouchableOpacityProps & {
+type IButtonProps = RectButtonProps & {
     title: string;
     icon: ImageSourcePropType
 }
 
-export const ButtonIcon = ({title, icon, activeOpacity} : IButtonProps) => {
+export const ButtonIcon = ({title, icon, activeOpacity, ...rest} : IButtonProps) => {
     return (
-        <TouchableOpacity 
+        <RectButton 
             style={styles.container}
             activeOpacity={activeOpacity}
+            {...rest}
         >
             <View style={styles.iconWrapper}>
                 <Image 
@@ -32,6 +31,6 @@ export const ButtonIcon = ({title, icon, activeOpacity} : IButtonProps) => {
             <Text style={styles.title}>
                 {title}
             </Text>
-        </TouchableOpacity>
+        </RectButton>
     )
 }
