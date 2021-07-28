@@ -17,17 +17,5 @@ export const styles = StyleSheet.create({
         fontSize: 15,
         textAlign: 'center',
         fontFamily: defaultTheme.fonts.text500,
-    },
-    iconWrapper: {
-        width: 56,
-        height: 44,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRightWidth: 1,
-        borderColor: defaultTheme.colors.line,
-    },
-    icon: {
-        width: 24,
-        height: 18,
     }
 })

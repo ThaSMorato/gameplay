@@ -10,9 +10,10 @@ import { styles } from "./styles";
 type ICategorySelect = {
     categorySelected: string;
     setCategory: (categoryId : string) => void;
+    hasCheckBox?: boolean;
 }
 
-export const CategorySelect = ({categorySelected, setCategory} : ICategorySelect) => {
+export const CategorySelect = ({categorySelected, setCategory, hasCheckBox = false} : ICategorySelect) => {
 
     return (
        <ScrollView 
@@ -29,6 +30,7 @@ export const CategorySelect = ({categorySelected, setCategory} : ICategorySelect
                         title={category.title}
                         checked={category.id === categorySelected}
                         onPress={() => setCategory(category.id)}
+                        hasCheckBox={hasCheckBox}
                    />
                )
            }
