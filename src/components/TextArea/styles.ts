@@ -11,7 +11,10 @@ export const styles = StyleSheet.create({
         fontFamily: defaultTheme.fonts.text400,
         fontSize: 13,
         marginRight: 4,
-        textAlign: 'center',
+        padding: 16,
+        borderWidth: 1,
+        borderColor: defaultTheme.colors.secondary50,
+        textAlignVertical: 'top',
     },
     
 })

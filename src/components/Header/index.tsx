@@ -43,10 +43,12 @@ export const Header = ({title, action} : IHeaderProps) => {
           </Text>
 
           {
-              action && 
+              action ?
               <View>
                   { action }
               </View>
+              :
+              <View style={{ width: 24}} />
           }
       </LinearGradient>
   )
