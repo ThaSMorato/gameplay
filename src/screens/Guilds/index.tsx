@@ -31,9 +31,11 @@ export const Guilds = ({ handleGuildSelected } : IGuilds) => {
                     onPress={() => handleGuildSelected(item)}    
                 /> 
             )}
-            ItemSeparatorComponent={() => <ListDivider />}
+            ItemSeparatorComponent={() => <ListDivider isCentered={true} />}
             showsVerticalScrollIndicator={false}
             style={styles.guilds}
+            contentContainerStyle={{paddingBottom: 68, paddingTop: 103 }}
+            ListHeaderComponent={() => <ListDivider isCentered={true} />}
         />
     </View>
   );

@@ -19,10 +19,6 @@ export const AuthRoutes = () => {
                 }
             }}
         >
-             <Screen 
-                name="SignIn"
-                component={Signin}
-            />
             <Screen 
                 name="Home"
                 component={Home}

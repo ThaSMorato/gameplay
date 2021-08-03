@@ -17,12 +17,12 @@ export const styles = StyleSheet.create({
         fontFamily: defaultTheme.fonts.title700,
         color: defaultTheme.colors.heading,
         fontSize: 18,
-        marginBottom: 11,
+        marginBottom: 4,
     },
     type: {
         fontFamily: defaultTheme.fonts.text400,
         color: defaultTheme.colors.highlight,
         fontSize: 13,
-        marginBottom: 24,
+        marginBottom: 12,
     }
 })

@@ -6,7 +6,6 @@ import { Text,
     Platform 
 } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import { Background } from '../../components/Background';
 import { CategorySelect } from '../../components/CategorySelect';
 import { Header } from '../../components/Header';
@@ -32,13 +31,17 @@ export const AppointmentCreate = () => {
         setOpenGuildsModal(true);
     }
 
+    const handleCloseGuildsModal = () => {
+        setOpenGuildsModal(false);
+    }
+
     const handleGuildSelected = (guildSelected: IGuild) => {
         setGuild(guildSelected);
         setOpenGuildsModal(false);
     }
 
     const handleCategorySelect = (categoryId: string) => {
-        categoryId === category? setCategory('') : setCategory(categoryId);
+        setCategory(categoryId);
     }
 
   return (
@@ -46,93 +49,98 @@ export const AppointmentCreate = () => {
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={styles.container}
         >
-            <ScrollView>
-                <Header 
-                    title={"Agendar Partida"}
-                />
+            <Background>
+                <ScrollView>
+                    <Header 
+                        title={"Agendar Partida"}
+                    />
 
-                <Text style={[styles.label, { marginLeft: 24, marginTop: 36, marginBottom: 18}]} >
-                    Categoria
-                </Text>
+                    <Text style={[styles.label, { marginLeft: 24, marginTop: 36, marginBottom: 18}]} >
+                        Categoria
+                    </Text>
 
-                <CategorySelect 
-                    hasCheckBox
-                    categorySelected={category}
-                    setCategory={handleCategorySelect}
-                />
+                    <CategorySelect 
+                        hasCheckBox
+                        categorySelected={category}
+                        setCategory={handleCategorySelect}
+                    />
 
-                <View style={styles.form}>
+                    <View style={styles.form}>
 
-                    <RectButton onPress={handleOpenGuildsModal}>
-                        <View style={styles.select}>
-                            
-                            {
-                                guild.icon ? <GuildIcon /> :  <View style={styles.image} />
+                        <RectButton onPress={handleOpenGuildsModal}>
+                            <View style={styles.select}>
+                                
+                                {
+                                    guild.icon ? <GuildIcon /> :  <View style={styles.image} />
 
-                            }
+                                }
 
-                            <View style={styles.selectBody}>
-                                <Text style={styles.label}>
-                                    { 
-                                        guild.name ? guild.name : "Selecione um servidor"
-                                    }
+                                <View style={styles.selectBody}>
+                                    <Text style={styles.label}>
+                                        { 
+                                            guild.name ? guild.name : "Selecione um servidor"
+                                        }
+                                    </Text>
+                                </View>
+                                <Feather 
+                                    name="chevron-right"
+                                    color={defaultTheme.colors.heading}
+                                    size={18}
+                                />
+                                
+                            </View>
+                        </RectButton>
+
+                        <View style={styles.field}>
+                            <View>
+                                <Text style={[styles.label, {marginBottom : 12}]}>
+                                    Dia e mes
                                 </Text>
+                                <View style={styles.column}>
+                                    <SmallInput maxLength={2}/>
+                                    <Text style={styles.divider}>/</Text>
+                                    <SmallInput maxLength={2}/>
+                                </View>
                             </View>
-                            <Feather 
-                                name="chevron-right"
-                                color={defaultTheme.colors.heading}
-                                size={18}
-                            />
+
+                            <View>
+                                <Text style={[styles.label, {marginBottom : 12}]}>
+                                    Hora e minuto
+                                </Text>
+                                <View style={styles.column}>
+                                    <SmallInput maxLength={2}/>
+                                    <Text style={styles.divider}>:</Text>
+                                    <SmallInput maxLength={2}/>
+                                </View>
+                            </View>
                             
                         </View>
-                    </RectButton>
 
-                    <View style={styles.field}>
-                        <View>
+                        <View style={[styles.field, {marginBottom: 12}]}>
                             <Text style={styles.label}>
-                                Dia e mes
+                                Descricao
                             </Text>
-                            <View style={styles.column}>
-                                <SmallInput maxLength={2}/>
-                                <Text style={styles.divider}>/</Text>
-                                <SmallInput maxLength={2}/>
-                            </View>
-                        </View>
-
-                        <View>
-                            <Text style={styles.label}>
-                                Hora e minuto
+                            <Text style={styles.caracteresLimit}>
+                                Max 100 caracteres
                             </Text>
-                            <View style={styles.column}>
-                                <SmallInput maxLength={2}/>
-                                <Text style={styles.divider}>:</Text>
-                                <SmallInput maxLength={2}/>
-                            </View>
                         </View>
-                        
-                    </View>
+                        <TextArea 
+                            multiline
+                            maxLength={100}
+                            numberOfLines={5}
+                            autoCorrect={false}
+                        /> 
 
-                    <View style={[styles.field, {marginBottom: 12}]}>
-                        <Text style={styles.label}>
-                            Descricao
-                        </Text>
-                        <Text style={styles.caracteresLimit}>
-                            Max 100 caracteres
-                        </Text>
+                        <View style={styles.footer}>
+                            <Button title="Agendar" />
+                        </View>
                     </View>
-                    <TextArea 
-                        multiline
-                        maxLength={100}
-                        numberOfLines={5}
-                        autoCorrect={false}
-                    /> 
-
-                    <View style={styles.footer}>
-                        <Button title="Agendar" />
-                    </View>
-                </View>
-            </ScrollView>
-            <ModalView visible={openGuildsModal}>
+                </ScrollView>
+            </Background>
+            <ModalView 
+                closeModal={handleCloseGuildsModal}
+                visible={openGuildsModal}
+            >
                 <Guilds 
                     handleGuildSelected={handleGuildSelected}
                 />

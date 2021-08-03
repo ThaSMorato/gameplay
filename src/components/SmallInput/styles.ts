@@ -12,6 +12,9 @@ export const styles = StyleSheet.create({
         fontSize: 13,
         marginRight: 4,
         textAlign: 'center',
+        borderWidth: 1,
+        borderColor: defaultTheme.colors.secondary50,
+
     },
     
 })

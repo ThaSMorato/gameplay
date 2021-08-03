@@ -32,9 +32,10 @@ export const styles = StyleSheet.create({
     image : {
         height: 68,
         width: 64,
-        backgroundColor: defaultTheme.colors.secondary50,
+        backgroundColor: defaultTheme.colors.secondary40,
         borderWidth: 1,
         borderRadius: 8,
+        borderColor: defaultTheme.colors.secondary50,
     },
     field : {
         width: "100%",

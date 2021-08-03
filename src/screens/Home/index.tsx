@@ -73,7 +73,7 @@ export const Home = () => {
             />
             
 
-            <View style={styles.content}>
+           
                 <ListHeader 
                     title="Partidas Agendadas"
                     subtitle="Total 6"
@@ -88,8 +88,8 @@ export const Home = () => {
                     style={styles.matches}
                     showsHorizontalScrollIndicator={false}
                     ItemSeparatorComponent={() => <ListDivider />}
+                    contentContainerStyle={{paddingBottom: 69}}
                 />
-            </View>
         </Background>
     );
 }

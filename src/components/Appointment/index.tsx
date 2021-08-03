@@ -11,17 +11,13 @@ import { styles } from "./styles";
 import PlayerSvg from '../../assets/player.svg';
 import CalendarSvg from '../../assets/calendar.svg';
 import { defaultTheme } from "../../global/styles/theme";
+import { IGuild } from "../Guild";
 
-export type GuildProps = {
-    id: string;
-    name: string;
-    icon: string | null;
-    owner: boolean;
-}
+
 
 export type IAppointmentProps = {
     id: string;
-    guild: GuildProps;
+    guild: IGuild;
     category: string;
     date: string;
     description: string;
@@ -44,8 +40,9 @@ export const Appointments = ({data, ...rest} : IAppointmentFunctionProps) => {
             {...rest}
         >
             <View style={styles.container}>
+                
                 <GuildIcon />
-
+                
                 <View style={styles.content}>
                     <View style={styles.header}>
                         <Text style={styles.title}>

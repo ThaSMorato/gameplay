@@ -3,20 +3,22 @@ import {
     Text, 
     View 
 } from "react-native";
+import { useAuth } from "../../hooks/auth";
 import { Avatar } from "../Avatar";
 import { styles } from "./styles";
 
 export const Profile = () => {
+    const {user} = useAuth();
     return (
         <View style={styles.container}>
-            <Avatar photo={"https://api.multiavatar.com/Conzy.png"} />
+            <Avatar photo={user.avatar} />
             <View>
                 <View style={styles.user}>
                     <Text style={styles.greeting}>
                         Ola,
                     </Text>
                     <Text style={styles.username}>
-                        Thales
+                        {user.firstName}
                     </Text>
                 </View>
                 <Text style={styles.message}>
