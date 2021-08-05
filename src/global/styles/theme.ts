@@ -17,6 +17,7 @@ export const defaultTheme = {
         overlay: 'rgba(0,0,0,0.7)',
         highlight: '#ABB1CC',
         on: '#32BD50',
+        discord: '#7289da',
     },    
     fonts: {
         title700: 'Rajdhani_700Bold',
