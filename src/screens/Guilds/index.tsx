@@ -2,6 +2,8 @@ import React from 'react';
 import { View, FlatList } from 'react-native';
 import { Guild, IGuild } from '../../components/Guild';
 import { ListDivider } from '../../components/ListDivider';
+import { Load } from '../../components/Load';
+import { api } from '../../services/api';
 
 import { styles } from './styles';
 
@@ -11,17 +13,26 @@ type IGuilds = {
 
 export const Guilds = ({ handleGuildSelected } : IGuilds) => {
 
-    const guilds = [
-        {
-            id: '1',
-            name: "Lendarios",
-            icon: "imgpng",
-            owner: true
-        }
-    ]
+    const [guilds, setGuilds] = React.useState<IGuild[]>([]);
+    const [loading, setLoading] = React.useState(true);
+
+    const fetchGuilds = async () => {
+        const response = await api.get('/users/@me/guilds');
+
+        setGuilds(response.data);
+
+        setLoading(false);
+    }
+
+   React.useEffect(() => {
+    fetchGuilds();
+   }, [])
 
   return (
     <View style={styles.container} >
+        { 
+        loading ? 
+        <Load /> :
         <FlatList 
             data={guilds}
             keyExtractor={item => item.id}
@@ -37,6 +48,7 @@ export const Guilds = ({ handleGuildSelected } : IGuilds) => {
             contentContainerStyle={{paddingBottom: 68, paddingTop: 103 }}
             ListHeaderComponent={() => <ListDivider isCentered={true} />}
         />
+        }
     </View>
   );
 }

@@ -41,7 +41,10 @@ export const Appointments = ({data, ...rest} : IAppointmentFunctionProps) => {
         >
             <View style={styles.container}>
                 
-                <GuildIcon />
+                <GuildIcon 
+                    guildId={data.guild.id}
+                    iconId={data.guild.icon}
+                />
                 
                 <View style={styles.content}>
                     <View style={styles.header}>

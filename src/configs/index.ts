@@ -1,3 +1,5 @@
+import { COLLECTION_APPOINTMENT, COLLECTION_USER  } from './storage';
+
 import {
     REDIRECT_URI,
     SCOPE,
@@ -8,6 +10,8 @@ import {
 
 
 export {
+    COLLECTION_APPOINTMENT,
+    COLLECTION_USER,
     REDIRECT_URI,
     SCOPE,
     RESPONSE_TYPE,

@@ -3,7 +3,7 @@ import { Text,
     View, 
     ScrollView, 
     KeyboardAvoidingView, 
-    Platform 
+    Platform
 } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { Background } from '../../components/Background';
@@ -11,7 +11,7 @@ import { CategorySelect } from '../../components/CategorySelect';
 import { Header } from '../../components/Header';
 import { defaultTheme } from '../../global/styles/theme';
 import { Feather } from '@expo/vector-icons';
-
+import uuid from 'react-native-uuid';
 import { styles } from './styles';
 import { GuildIcon } from '../../components/GuildIcon';
 import { SmallInput } from '../../components/SmallInput';
@@ -20,12 +20,23 @@ import { Button } from '../../components/Button';
 import ModalView from '../../components/ModalView';
 import { Guilds } from '../Guilds';
 import { IGuild } from '../../components/Guild';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { COLLECTION_APPOINTMENT } from '../../configs';
+import { useNavigation } from '@react-navigation/native';
 
 export const AppointmentCreate = () => {
 
     const [category, setCategory] = React.useState<string>('');
     const [openGuildsModal, setOpenGuildsModal] = React.useState<boolean>(false);
     const [guild, setGuild] = React.useState<IGuild>({} as IGuild);
+
+    const [day, setDay] = React.useState<string>('');
+    const [month, setMonth] = React.useState<string>('');
+    const [hour, setHour] = React.useState<string>('');
+    const [minute, setMinute] = React.useState<string>('');
+    const [description, setDescription] = React.useState<string>('');
+
+    const navigation = useNavigation();
 
     const handleOpenGuildsModal = () => {
         setOpenGuildsModal(true);
@@ -42,6 +53,24 @@ export const AppointmentCreate = () => {
 
     const handleCategorySelect = (categoryId: string) => {
         setCategory(categoryId);
+    }
+
+    const handleSave = async () => {
+        const newAppointment = {
+            id : uuid.v4(),
+            guild,
+            category,
+            date: `${day}/${month} as ${hour}:${minute}h`,
+            description,
+        };
+
+        const storage = await AsyncStorage.getItem(COLLECTION_APPOINTMENT);
+
+        const appointments = storage ? JSON.parse(storage) : [];
+
+        await AsyncStorage.setItem(COLLECTION_APPOINTMENT, JSON.stringify([...appointments, newAppointment]));
+
+        navigation.navigate('Home');
     }
 
   return (
@@ -71,7 +100,7 @@ export const AppointmentCreate = () => {
                             <View style={styles.select}>
                                 
                                 {
-                                    guild.icon ? <GuildIcon /> :  <View style={styles.image} />
+                                    guild.id ? <GuildIcon guildId={guild.id} iconId={guild.icon} /> :  <View style={styles.image} />
 
                                 }
 
@@ -97,9 +126,15 @@ export const AppointmentCreate = () => {
                                     Dia e mes
                                 </Text>
                                 <View style={styles.column}>
-                                    <SmallInput maxLength={2}/>
+                                    <SmallInput 
+                                        maxLength={2}
+                                        onChangeText={setDay}
+                                    />
                                     <Text style={styles.divider}>/</Text>
-                                    <SmallInput maxLength={2}/>
+                                    <SmallInput 
+                                        onChangeText={setMonth}
+                                        maxLength={2}
+                                    />
                                 </View>
                             </View>
 
@@ -108,9 +143,15 @@ export const AppointmentCreate = () => {
                                     Hora e minuto
                                 </Text>
                                 <View style={styles.column}>
-                                    <SmallInput maxLength={2}/>
+                                    <SmallInput 
+                                        maxLength={2}
+                                        onChangeText={setHour}
+                                    />
                                     <Text style={styles.divider}>:</Text>
-                                    <SmallInput maxLength={2}/>
+                                    <SmallInput 
+                                        maxLength={2}
+                                        onChangeText={setMinute}
+                                    />
                                 </View>
                             </View>
                             
@@ -129,10 +170,11 @@ export const AppointmentCreate = () => {
                             maxLength={100}
                             numberOfLines={5}
                             autoCorrect={false}
+                            onChangeText={setDescription}
                         /> 
 
                         <View style={styles.footer}>
-                            <Button title="Agendar" />
+                            <Button title="Agendar" onPress={handleSave}/>
                         </View>
                     </View>
                 </ScrollView>

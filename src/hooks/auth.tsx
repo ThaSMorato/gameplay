@@ -2,15 +2,21 @@ import React from 'react';
 
 import * as AuthSession from 'expo-auth-session';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { api } from '../services/api';
 
-import { 
-    SCOPE,
+
+
+import {
+    REDIRECT_URI, 
+    SCOPE, 
+    RESPONSE_TYPE,
     CLIENT_ID,
-    CDN_IMAGE,
-    REDIRECT_URI,
-    RESPONSE_TYPE
-} from '../configs'
+    CDN_IMAGE
+} from '../configs';
+
+import { COLLECTION_USER } from "../configs";
 
 type IUser = {
     id: string;
@@ -25,6 +31,7 @@ type IAuthContextData = {
     user: IUser;
     singIn: () => Promise<void>;
     loading: boolean;
+    singOut : () => Promise<void>;
 }
 
 type IAuthProviderProps = {
@@ -33,7 +40,8 @@ type IAuthProviderProps = {
 
 type IAuthResponse = AuthSession.AuthSessionResult & {
     params: {
-        access_token : string
+        access_token?: string;
+        error?: string
     }
 }
 
@@ -53,7 +61,7 @@ const AuthProvider = ({children}: IAuthProviderProps) => {
             const {type, params} = await AuthSession
             .startAsync({ authUrl }) as IAuthResponse;
 
-            if(type === "success") {
+            if(type === "success" && !params.error) {
                 api.defaults.headers.authorization = `Bearer ${params.access_token}`;
 
                 const userInfo = await api.get('/users/@me');
@@ -62,21 +70,44 @@ const AuthProvider = ({children}: IAuthProviderProps) => {
 
                 userInfo.data.avatar = `${CDN_IMAGE}/avatars/${userInfo.data.id}/${userInfo.data.avatar}.png`;
 
-                setUser({...userInfo.data, firstName, token: params.access_token});
+                const userData = {...userInfo.data, firstName, token: params.access_token};
 
-                setLoading(false);
-            } else {
-                setLoading(false);
+                setUser(userData);
+
+                await AsyncStorage.setItem(COLLECTION_USER, JSON.stringify(userData))
             }
 
         } catch {
             throw new Error("Nao foi possivel fazer o login");
+        } finally {
+            setLoading(false);
         }
     }
 
+    const singOut = async () => {
+        setUser({} as IUser);
+        await AsyncStorage.removeItem(COLLECTION_USER);
+    }
+
+    const loadUserDatabaseData = async () => {
+        const storage = await AsyncStorage.getItem(COLLECTION_USER);
+
+        if(storage) {
+            const userLogged = JSON.parse(storage) as IUser;
+
+            api.defaults.headers.authorization = `Bearer ${userLogged.token}`;
+
+            setUser(userLogged)
+        }
+    }
+
+    React.useEffect(() => {
+        loadUserDatabaseData();
+    }, [])
+
     return (
         <AuthContext.Provider value={
-            {user, singIn, loading}
+            {user, singIn, loading, singOut}
         }>
             {children}
         </AuthContext.Provider>

@@ -3,28 +3,42 @@ import React from "react";
 import {
     Image
 } from "react-native";
+import { CDN_IMAGE } from "../../configs";
+
+import DiscordSvg from '../../assets/discord.svg';
 
 import { defaultTheme } from "../../global/styles/theme";
 import { styles } from "./styles";
 
+type IGuilIconProps = {
+    guildId: string,
+    iconId: string | null,
+}
+
+export const GuildIcon = ({guildId, iconId} : IGuilIconProps) => {
+
+    const uri = `${CDN_IMAGE}/icons/${guildId}/${iconId}.png`;
 
 
-export const GuildIcon = () => {
-
-    const uri = "https://api.multiavatar.com/Discord.png";
-
-    const { secondary50, secondary70 } = defaultTheme.colors;
+    const { secondary30, discord } = defaultTheme.colors;
 
     return (
         <LinearGradient
             style={styles.guildIconContainer}
-            colors={[secondary50, secondary70]}            
+            colors={[secondary30, discord]}            
         >
-            <Image 
-                style={styles.image} 
-                source={{ uri }}
-                resizeMode="cover"
-            />
+            {
+                iconId ? 
+                <Image 
+                    style={styles.image} 
+                    source={{ uri }}
+                    resizeMode="cover"
+                />
+                : <DiscordSvg 
+                    width={40}
+                    height={40}
+                />
+            }
         </LinearGradient>
         
     );
